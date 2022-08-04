@@ -15,10 +15,23 @@ export default async function handler(req, res) {
 
   const duplicate = await User.findOne({ email: body.email });
   if (duplicate) {
-    return res.status(400).json({ failed: "email already exists" });
+    return res
+      .status(400)
+      .json({ success: false, message: "Email already exists" });
   }
   const user = await newUser.save();
-  return res
-    .status(200)
-    .json({ success: `User: ${body.name} has been saved`, user });
+
+  if (user) {
+    return res.status(200).json({
+      success: true,
+      message: `User: ${body.name} has been saved`,
+      user,
+    });
+  } else {
+    return res.status(400).json({
+      success: false,
+      message: `Failed to save user`,
+      user,
+    });
+  }
 }

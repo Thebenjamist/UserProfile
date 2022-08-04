@@ -5,7 +5,7 @@ import Cookies from "js-cookie";
 
 const Register = () => {
   const router = useRouter();
-  const [user, setUser] = React.useState();
+  const [data, setData] = React.useState();
 
   const register = () => {
     const name = document.getElementById("name").value;
@@ -14,22 +14,23 @@ const Register = () => {
     const password = document.getElementById("password").value;
 
     const data = { name, email, gender, password };
-    fetch("api/register", {
-      method: "POST",
-      body: JSON.stringify(data),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        setUser(data.user);
-      });
-  };
 
-  useEffect(() => {
-    if (user) {
-      Cookies.set("user", user._id);
-      router.push("viewProfile");
+    if (name != "" && email != "" && gender != "" && password != "") {
+      fetch("api/register", {
+        method: "POST",
+        body: JSON.stringify(data),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          setData(data);
+          if (data?.success) {
+            router.push("login");
+          }
+        });
+    } else {
+      setData({ message: "Please fill in all fields" });
     }
-  }, [user]);
+  };
 
   return (
     <div className={styles.container}>
@@ -53,6 +54,19 @@ const Register = () => {
         />
       </div>
       <br />
+      <br />
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        <h7
+          style={{
+            textAlign: "center",
+            color: data?.success ? "green" : "red",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          {data?.message}
+        </h7>
+      </div>
       <br />
 
       <div className={styles.buttonContainer}>
