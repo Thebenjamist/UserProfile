@@ -14,20 +14,24 @@ const Login = () => {
 
     const data = { email, password };
 
-    fetch("api/login", {
-      method: "POST",
-      body: JSON.stringify(data),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.success) {
-          setData(data);
-          Cookies.set("token", data.token);
-          router.push("viewProfile");
-        } else {
-          setData(data);
-        }
-      });
+    if (email != "" && password != "") {
+      fetch("api/login", {
+        method: "POST",
+        body: JSON.stringify(data),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.success) {
+            setData(data);
+            Cookies.set("token", data.token);
+            router.push("viewProfile");
+          } else {
+            setData(data);
+          }
+        });
+    } else {
+      setData({ message: "Fill in all fields" });
+    }
   };
 
   return (
@@ -49,16 +53,19 @@ const Login = () => {
         </div>
       </div>
 
-      <h7
-        style={{
-          textAlign: "right",
-          color: data?.success ? "green" : "red",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        {data?.message}
-      </h7>
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        <h7
+          style={{
+            textAlign: "right",
+            color: data?.success ? "green" : "red",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          {data?.message}
+        </h7>
+      </div>
+      <br />
 
       <div className={styles.buttonContainer}>
         <button className={styles.button} onClick={login}>
