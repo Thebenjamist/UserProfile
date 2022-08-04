@@ -20,7 +20,6 @@ const Register = () => {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
         setUser(data.user);
       });
   };
@@ -28,7 +27,7 @@ const Register = () => {
   useEffect(() => {
     if (user) {
       Cookies.set("user", user._id);
-      // router.push("viewProfile");
+      router.push("viewProfile");
     }
   }, [user]);
 

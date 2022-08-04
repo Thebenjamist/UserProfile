@@ -37,10 +37,8 @@ const UpdateProfile = () => {
     }
     try {
       const decoded = jwt.verify(token, "lupiya");
-      console.log(decoded);
       setId(decoded.id);
     } catch (e) {
-      console.log("Error: ", e);
       Cookies.remove("token");
       router.push("/");
     }

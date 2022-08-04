@@ -24,7 +24,6 @@ const ViewProfile = () => {
         const decoded = jwt.verify(token, "lupiya");
         setId(decoded.id);
       } catch (e) {
-        console.log("Error: ", e);
         Cookies.remove("token");
         router.push("/");
       }
